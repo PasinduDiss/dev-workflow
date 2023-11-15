@@ -3,4 +3,6 @@ services:
     build:
       dockerfile: ./Dockerfile.dev
     volumes:
-      - ./:/opt
+      - dev-volume:/root
+volumes:
+  dev-volume:
