@@ -5,7 +5,7 @@ RUN apt -y update \
   && apt -y install git \
   && apt -y install curl wget
 RUN DEBIAN_FRONTEND=noninteractive TZ=Australia/Melbourne apt -y install libffi-dev \ 
-                   # libbz2-dev \
+                   libbz2-dev \
                    libreadline-dev \
                    libssl-dev \
                    libsqlite3-dev \
@@ -19,7 +19,6 @@ RUN DEBIAN_FRONTEND=noninteractive TZ=Australia/Melbourne apt -y install libffi-
                    tk-dev \ 
                    libxml2-dev \ 
                    libxmlsec1-dev \
-                   neovim \
                    icu-devtools \ 
                    libexpat1-dev \
                    libicu-dev \
@@ -45,16 +44,24 @@ RUN ~/.asdf/bin/asdf install python 3.11.0
 RUN ~/.asdf/bin/asdf global python 3.11.0
 RUN ~/.asdf/bin/asdf local python 3.11.0
 
-
 # Install mojo
 RUN curl -y 1  https://get.modular.com | sh - && modular auth mut_4e91d2c84f1b43acb4996bdaa8662b95
 RUN modular install mojo
 
 FROM base as dev
+
+# Install neovim
+RUN curl -L https://github.com/neovim/neovim/releases/download/stable/nvim-linux64.tar.gz -o ~/nvim-linux64.tar.gz 
+RUN tar -xzf ~/nvim-linux64.tar.gz -C ~ && rm ~/nvim-linux64.tar.gz
+RUN ln -s ~/nvim-linux64/bin/nvim /bin/nvim
+RUN git clone https://github.com/LazyVim/starter ~/.config/nvim && \
+    rm -rf ~/.config/nvim/.git
+
+# configure p10k
 COPY .p10k.zsh /root/.p10k.zsh
 RUN echo 'if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then \n source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" \n fi' >> ~/.zshrc
 RUN echo '[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh' >> ~/.zshrc
 RUN echo 'export MODULAR_HOME="/root/.modular"' >> ~/.zshrc
 RUN echo 'export PATH="/root/.modular/pkg/packages.modular.com_mojo/bin:$PATH"' >> ~/.zshrc
-WORKDIR /root
+WORKDIR /root 
 CMD [ "/bin/zsh" ]
