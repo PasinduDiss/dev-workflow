@@ -1,0 +1,6 @@
+services:
+  dev:
+    build:
+      dockerfile: ./Dockerfile.dev
+    volumes:
+      - ./:/opt
