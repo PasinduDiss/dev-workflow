@@ -1,6 +1,8 @@
 services:
   dev:
+    image: pasindudiss/mojo-dev:latest
     build:
+      context: .
       dockerfile: ./Dockerfile.dev
     volumes:
       - dev-volume:/root
