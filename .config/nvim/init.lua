@@ -1,4 +1,3 @@
-require("pasindu.core.options")
-require("pasindu.core.keymaps")
-require("pasindu.core.colorscheme")
-
+require("pasindu.core")
+require("pasindu.plugins")
+require("pasindu.lazy")
