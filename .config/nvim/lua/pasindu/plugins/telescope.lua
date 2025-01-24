@@ -6,6 +6,7 @@ return {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     "nvim-tree/nvim-web-devicons",
     "folke/todo-comments.nvim",
+    "nvim-telescope/telescope-project.nvim",
   },
   config = function()
     local telescope = require("telescope")
@@ -34,13 +35,23 @@ return {
           },
         },
       },
+      extensions = {
+        project = {
+          base_dirs = { '~/code/projects/', '~/code/learning/' }, -- Add paths to your project directories
+          hidden_files = false, -- Show hidden files when browsing projects
+          theme = 'dropdown', -- Set picker theme
+        }
+    }
     })
 
+
     telescope.load_extension("fzf")
+    telescope.load_extension('project')
 
     -- set keymaps
     local keymap = vim.keymap -- for conciseness
-
+    
+    keymap.set("n", "<leader>fp", "<cmd>Telescope projects<cr>", { desc = "List projects" })
     keymap.set("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "Fuzzy find files in cwd" })
     keymap.set("n", "<leader>fr", "<cmd>Telescope oldfiles<cr>", { desc = "Fuzzy find recent files" })
     keymap.set("n", "<leader>fs", "<cmd>Telescope live_grep<cr>", { desc = "Find string in cwd" })
