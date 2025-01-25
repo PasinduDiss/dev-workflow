@@ -14,7 +14,7 @@ opt.autoindent = true -- copy indent from the current line when starting a new o
 opt.wrap = false
 
 -- search settings
-opt.ignorecase = true -- ignore case when search 
+opt.ignorecase = true -- ignore case when search
 opt.smartcase = true -- if you include mixed case in your search, assumes you want case sensitive
 
 opt.cursorline = true
@@ -28,7 +28,6 @@ opt.signcolumn = "yes" -- show sign column so that text doesn't shift
 -- backspace
 opt.backspace = "indent,eol,start" -- allow backspace on indent, end of line or insert mode start position
 
--- clipboard 
-opt.clipboard:append("unnamedplus") -- split vertical widnow to the right 
+-- clipboard
+opt.clipboard:append("unnamedplus") -- split vertical widnow to the right
 opt.splitbelow = true -- split horizontal widow to the bottom
-

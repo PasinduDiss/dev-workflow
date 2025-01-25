@@ -30,8 +30,11 @@ return {
                 "StatusLineNC",
                 "EndOfBuffer",
             },
-            extra_groups = {"NeoTreeNormal","NeoTreeNormalNC"}, -- and this was super important as well
+            extra_groups = {"NeoTreeNormal","NeoTreeNormalNC", "NvimTreeNormal"}, -- and this was super important as well
             exclude_groups = {}, -- table: groups you don't want to clear
         })
+
+            local keymap = vim.keymap -- for conciseness
+            keymap.set("n", "<leader>ttp", "<cmd>TransparentToggle<CR>", { desc = "Toggle transparent mode" }) -- toggle file explorer
     end,
 }
