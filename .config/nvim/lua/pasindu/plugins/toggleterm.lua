@@ -11,10 +11,10 @@ return {
 				winblend = 3, -- Transparency level (0 = opaque, 100 = fully transparent)
 				highlights = {
 					border = "Normal", -- Highlight group for the border
-					background = "Normal", -- Highlight group for the background
+					background = "TermNormal", -- Highlight group for the background
 				},
 			},
-			shade_terminals = true, -- Shades the background of the terminal
+			shade_terminals = false, -- Shades the background of the terminal
 			shading_factor = 2, -- Degree of shading for the terminal
 			close_on_exit = true, -- Automatically close the terminal when the process exits
 			shell = vim.o.shell, -- Use the default shell

@@ -24,7 +24,7 @@ return {
 						return "🍄🍄🍄"
 					end,
 				},
-			}, -- },
+			},
 			sections = {
 				lualine_x = {
 					{
