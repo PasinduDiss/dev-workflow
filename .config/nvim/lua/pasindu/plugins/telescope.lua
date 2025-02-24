@@ -7,6 +7,7 @@ return {
 		"nvim-tree/nvim-web-devicons",
 		"folke/todo-comments.nvim",
 		"nvim-telescope/telescope-project.nvim",
+		"AckslD/swenv.nvim",
 	},
 	config = function()
 		local telescope = require("telescope")

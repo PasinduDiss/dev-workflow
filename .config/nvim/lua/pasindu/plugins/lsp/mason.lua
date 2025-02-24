@@ -45,10 +45,11 @@ return {
 			ensure_installed = {
 				"prettier", -- prettier formatter
 				"stylua", -- lua formatter
-				"isort", -- python formatter
-				"ruff",
-				"pylint",
+				"isort", -- python import formatter
+				"ruff", -- python formater and linter
 				"eslint_d",
+				"sqlfluff", -- sql linter
+				"sqlfmt", -- sql formatter
 			},
 		})
 	end,

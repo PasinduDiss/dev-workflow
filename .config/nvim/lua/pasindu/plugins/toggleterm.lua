@@ -3,12 +3,18 @@ return {
 	version = "*",
 	config = function()
 		require("toggleterm").setup({
-			size = 20, -- Size of the terminal (doesn't affect float)
-			open_mapping = [[<C-\>]], -- Keybinding to toggle the terminal
-			direction = "float", -- Use floating window for terminal
+			size = 20,
+			open_mapping = [[<C-\\>]], -- This is the key mapping for toggling the terminal
+			hide_numbers = true, -- Hide number column in terminal buffer
+			shade_filetypes = {},
+			start_in_insert = true,
+			insert_mappings = true, -- Allow mappings in insert mode
+			terminal_mappings = true, -- Use mappings in terminal mode
+			persist_size = true,
+			direction = "float", -- Options: 'vertical' | 'horizontal' | 'tab' | 'float'
 			float_opts = {
 				border = "curved", -- Border style: 'single', 'double', 'shadow', 'curved'
-				winblend = 3, -- Transparency level (0 = opaque, 100 = fully transparent)
+				winblend = 0, -- Transparency level (0 = opaque, 100 = fully transparent)
 				highlights = {
 					border = "Normal", -- Highlight group for the border
 					background = "TermNormal", -- Highlight group for the background
@@ -19,8 +25,20 @@ return {
 			close_on_exit = true, -- Automatically close the terminal when the process exits
 			shell = vim.o.shell, -- Use the default shell
 		})
-		local keymap = vim.keymap -- for conciseness
-		keymap.set("n", "<C-;>", "<cmd>ToggleTerm<CR>", { noremap = true, silent = true })
-		keymap.set("t", "<C-;>", "<C-\\><C-n><cmd>ToggleTerm<CR>", { noremap = true, silent = true })
+
+		local keymap = vim.keymap
+
+		keymap.set("n", "<C-\\>", "<Cmd>ToggleTerm<CR>", {
+			noremap = true,
+			silent = true,
+			desc = "Toggle terminal (open/close)",
+		})
+
+		-- Toggle terminal with <C-\> in terminal mode
+		keymap.set("t", "<C-\\>", "<Cmd>ToggleTerm<CR>", {
+			noremap = true,
+			silent = true,
+			desc = "Toggle terminal from inside the terminal",
+		})
 	end,
 }

@@ -22,4 +22,10 @@ keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>", { desc = "open current buffer
 
 -- tab management
 keymap.set("n", "<leader>bn", "<cmd>bn<CR>", { desc = "go to next buffer" })
-keymap.set("n", "<leader>bp", "<cmd>bp<CR>", { desc = "go to previous buffer" })
+keymap.set("n", "<leader>bb", "<cmd>bp<CR>", { desc = "go to previous buffer" })
+
+-- resize windows
+vim.api.nvim_set_keymap("n", "<A-Up>", ":resize +5<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<A-Down>", ":resize -5<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<A-Left>", ":vertical resize -5<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<A-Right>", ":vertical resize +5<CR>", { noremap = true, silent = true })

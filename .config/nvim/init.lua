@@ -2,7 +2,8 @@ require("pasindu.core")
 require("pasindu.plugins")
 require("pasindu.lazy")
 
-vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
-	pattern = "*.py",
-	command = "set filetype=python",
-})
+vim.cmd([[
+  filetype on
+  filetype plugin on
+  filetype indent on
+]])
