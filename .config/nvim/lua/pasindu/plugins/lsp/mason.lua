@@ -1,5 +1,6 @@
 return {
 	"williamboman/mason.nvim",
+	version = "*",
 	dependencies = {
 		"williamboman/mason-lspconfig.nvim",
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -37,7 +38,7 @@ return {
 				"graphql",
 				"emmet_ls",
 				"prismals",
-				"pyright",
+				"ruff",
 			},
 		})
 

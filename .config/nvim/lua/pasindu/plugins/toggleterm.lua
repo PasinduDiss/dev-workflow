@@ -28,14 +28,14 @@ return {
 
 		local keymap = vim.keymap
 
-		keymap.set("n", "<C-\\>", "<Cmd>ToggleTerm<CR>", {
+		keymap.set("n", "<C-;>", "<Cmd>ToggleTerm<CR>", {
 			noremap = true,
 			silent = true,
 			desc = "Toggle terminal (open/close)",
 		})
 
 		-- Toggle terminal with <C-\> in terminal mode
-		keymap.set("t", "<C-\\>", "<Cmd>ToggleTerm<CR>", {
+		keymap.set("t", "<C-;>", "<Cmd>ToggleTerm<CR>", {
 			noremap = true,
 			silent = true,
 			desc = "Toggle terminal from inside the terminal",

@@ -77,3 +77,11 @@ alias icat='kitty +kitten icat'
 
 # intellij
 alias idea='open -na "IntelliJ IDEA CE.app"'
+
+# lazy docker
+alias dkr='lazydocker'
+
+# enable autocompletions
+fpath+=~/.zsh/completions
+autoload -Uz compinit
+compinit
