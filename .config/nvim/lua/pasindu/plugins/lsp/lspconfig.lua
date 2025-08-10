@@ -5,6 +5,7 @@ return {
 		"hrsh7th/cmp-nvim-lsp",
 		{ "antosha417/nvim-lsp-file-operations", config = true },
 		{ "folke/neodev.nvim", opts = {} },
+		{ "mfussenegger/nvim-jdtls" }, -- <-- added for Java (managed outside lspconfig)
 	},
 	config = function()
 		local lspconfig = require("lspconfig")
@@ -13,6 +14,7 @@ return {
 
 		local keymap = vim.keymap
 
+		-- Global LSP keymaps when a server attaches
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("UserLspConfig", {}),
 			callback = function(ev)
@@ -59,74 +61,94 @@ return {
 			end,
 		})
 
+		-- Completion capabilities
 		local capabilities = cmp_nvim_lsp.default_capabilities()
 
+		-- Diagnostic signs
 		local signs = { Error = " ", Warn = " ", Hint = "󰠠 ", Info = " " }
 		for type, icon in pairs(signs) do
 			local hl = "DiagnosticSign" .. type
 			vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 		end
 
+		-- Configure all Mason-installed servers EXCEPT jdtls (handled by nvim-jdtls)
 		local servers = mason_lspconfig.get_installed_servers()
-
 		for _, server_name in ipairs(servers) do
-			local opts = {
-				capabilities = capabilities,
-			}
+			if server_name ~= "jdtls" then
+				local opts = {
+					capabilities = capabilities,
+				}
 
-			if server_name == "svelte" then
-				opts.on_attach = function(client, bufnr)
-					vim.api.nvim_create_autocmd("BufWritePost", {
-						pattern = { "*.js", "*.ts" },
-						callback = function(ctx)
-							client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
-						end,
-					})
+				if server_name == "svelte" then
+					opts.on_attach = function(client, bufnr)
+						vim.api.nvim_create_autocmd("BufWritePost", {
+							pattern = { "*.js", "*.ts" },
+							callback = function(ctx)
+								client.notify("$/onDidChangeTsOrJsFile", { uri = ctx.match })
+							end,
+						})
+					end
+				elseif server_name == "graphql" then
+					opts.filetypes = {
+						"graphql",
+						"gql",
+						"svelte",
+						"typescriptreact",
+						"javascriptreact",
+					}
+				elseif server_name == "emmet_ls" then
+					opts.filetypes = {
+						"html",
+						"typescriptreact",
+						"javascriptreact",
+						"css",
+						"sass",
+						"scss",
+						"less",
+						"svelte",
+					}
+				elseif server_name == "lua_ls" then
+					opts.settings = {
+						Lua = {
+							diagnostics = {
+								globals = { "vim" },
+							},
+							completion = {
+								callSnippet = "Replace",
+							},
+						},
+					}
+				elseif server_name == "pyright" then
+					opts.settings = {
+						python = {
+							analysis = {
+								typeCheckingMode = "basic",
+								autoSearchPaths = true,
+								useLibraryCodeForTypes = true,
+								diagnosticMode = "workspace",
+							},
+						},
+					}
 				end
-			elseif server_name == "graphql" then
-				opts.filetypes = {
-					"graphql",
-					"gql",
-					"svelte",
-					"typescriptreact",
-					"javascriptreact",
-				}
-			elseif server_name == "emmet_ls" then
-				opts.filetypes = {
-					"html",
-					"typescriptreact",
-					"javascriptreact",
-					"css",
-					"sass",
-					"scss",
-					"less",
-					"svelte",
-				}
-			elseif server_name == "lua_ls" then
-				opts.settings = {
-					Lua = {
-						diagnostics = {
-							globals = { "vim" },
-						},
-						completion = {
-							callSnippet = "Replace",
-						},
-					},
-				}
-			elseif server_name == "pyright" then
-				opts.settings = {
-					python = {
-						analysis = {
-							typeCheckingMode = "basic",
-							autoSearchPaths = true,
-							useLibraryCodeForTypes = true,
-							diagnosticMode = "workspace",
-						},
-					},
-				}
-			end
 
-			lspconfig[server_name].setup(opts)
+				lspconfig[server_name].setup(opts)
+			end
 		end
+
+		-- Auto-start JDTLS using the minimal OS-aware config (lua/config/java_min.lua)
+		-- Ensure you've saved the provided java_min.lua from the canvas.
+		vim.api.nvim_create_autocmd("FileType", {
+			pattern = "java",
+			callback = function()
+				local ok, jm = pcall(require, "config.java_min")
+				if not ok then
+					vim.notify("config.java_min not found; JDTLS not started", vim.log.levels.WARN)
+					return
+				end
+				-- ensure cmp caps available inside jdtls too (if you want to pass them in java_min)
+				vim.g._java_cmp_caps = capabilities
+				jm.setup()
+			end,
+		})
 	end,
 }

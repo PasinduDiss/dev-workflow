@@ -15,6 +15,7 @@ return {
 			},
 			-- change folder arrow icons
 			renderer = {
+				group_empty = true,
 				indent_markers = {
 					enable = true,
 				},
@@ -35,6 +36,8 @@ return {
 					window_picker = {
 						enable = false,
 					},
+					quit_on_open = false,
+					resize_window = true,
 				},
 			},
 			filters = {
