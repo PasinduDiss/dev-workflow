@@ -1,4 +1,4 @@
-# Pasindu's Dev workflow set up
+# Pasindu's De Setup
 
 - Kitty
 - Lunar Vim - ide
